@@ -30,13 +30,7 @@ class Server {
                 Future<AsynchronousSocketChannel> future = server.accept();
                 handleClient(future);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (TimeoutException e) {
+        } catch (IOException | TimeoutException | ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -78,13 +72,11 @@ class Server {
                     e.printStackTrace();
 
                     response.setStatusCode(500)
-                            .setStatus("Internal server error")
                             .addHeader(HttpHeader.CONTENT_TYPE, ContentType.TEXT_HTML_UTF8)
                             .setBody("<html><body><h1>Error happens</h1></body></html>");
                 }
             } else {
                 response.setStatusCode(404)
-                        .setStatus("Not found")
                         .addHeader(HttpHeader.CONTENT_TYPE, ContentType.TEXT_HTML_UTF8)
                         .setBody("<html><body><h1>Resource not found</h1></body></html>");
             }
